@@ -236,7 +236,12 @@ function GameCore(num){
 	this.getWinner = function(){
 		var winners = [];
 		if(this.playerAlive == 1){
-			for(key in this.players)if(this.players[key] != null)winners.push(key);
+			for(key in this.players)if(this.players[key] != null){
+				winners.push(key);
+				var temp = new Card(this.players[key].handcards[0]);
+				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
+			}
+			
 		}else{
 			for(key in this.players){
 				if(winners[0] == null)winners.push(key);
