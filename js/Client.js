@@ -231,6 +231,7 @@
 		if(data.key != null)playerKey = data.key;
 		hide("roomPage");
 		show("gamePage");
+		clearNode("console");
 		init_GamePage(false);
 	});
 	
