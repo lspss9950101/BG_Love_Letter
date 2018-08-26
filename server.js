@@ -206,7 +206,7 @@ function GameCore(num){
 		this.cardPool.splice(index, 1);
 		this.players[order].addCard(card);
 		var aliveList = [];
-		if(this.players[order].handcards.length == 2)for(key in this.players)aliveList.push(socketList[this.room.players[key]].name);
+		if(this.players[order].handcards.length == 2)for(key in this.players)if(this.players[key] != null)aliveList.push(socketList[this.room.players[key]].name);
 		io.to(this.room.players[order]).emit('drawCard', {card : this.players[order].handcards, alives : aliveList});
 	}
 	
