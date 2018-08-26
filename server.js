@@ -313,7 +313,10 @@ function GameCore(num){
 				if(caster == target)sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "重抽了一張牌 <--[5]", false);
 				else sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "使" 
 										+ socketList[this.room.players[target]].name + "重抽一張牌 <--[5]", false);
+				var temp = new Card(this.players[target].handcards[0]);
 				this.players[target].removeCard(0);
+				if(temp.number == 8)this.eliminate(target);
+				else sendMessage(this.roomNum, socketList[this.room.players[target]].name + "原本的牌是" + temp.getDisplayName(), false);
 				this.drawCard(target, false);
 				break;
 			case 6:
