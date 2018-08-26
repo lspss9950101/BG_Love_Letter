@@ -267,6 +267,9 @@ function GameCore(num){
 		this.playerAlive--;
 		this.players[order] = null;
 		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "被淘汰了!", true);
+		var temp = new Card(this.players[order].handcards[0]);
+		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "的底牌是" + temp.getDisplayName());
+		io.to(this.room.players[order]).emit('eliminated',{});
 	}
 	
 	this.discardCard = function(caster, card, target, extra){

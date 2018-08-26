@@ -420,4 +420,8 @@
 		}
 	}
 	
+	socket.on('eliminated',function(data){
+		init_GamePage(false);
+	});
+	
 })();
