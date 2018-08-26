@@ -317,9 +317,8 @@ function GameCore(num){
 				if(temp.number == 8){
 					this.eliminate(target);
 					return;
-				}
-				this.players[target].removeCard(0);
-				else{
+				}else{
+					this.players[target].removeCard(0);
 					sendMessage(this.roomNum, socketList[this.room.players[target]].name + "原本的牌是" + temp.getDisplayName(), false);
 					this.drawCard(target, false);
 				}
