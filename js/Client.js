@@ -268,6 +268,8 @@
 	});
 	
 	document.getElementById("leaveRoomBtn").addEventListener("click",function(){
+		hide("gamePage");
+		show("roomPage");
 		socket.emit('leaveRoom',{});
 	});
 	
