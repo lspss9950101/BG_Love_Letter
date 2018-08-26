@@ -1,0 +1,130 @@
+.introDiv{
+	background: #FFF0F5;
+	-moz-box-shadow: 0 4px 8px 0 rgb(0,0,0,0.2), 0 6px 20px 0 rgb(0,0,0,0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgb(0,0,0,0.2), 0 6px 20px 0 rgb(0,0,0,0.19);
+	font-family: Brush Script Std, Brush Script MT, Microsoft JhengHei, cursive;
+	font-size: 35px;
+	box-shadow: 0 4px 8px 0 rgb(0,0,0,0.2), 0 6px 20px 0 rgb(0,0,0,0.19);
+}
+	
+.introFont{
+	font-family: Brush Script Std, Brush Script MT, cursive, Microsoft JhengHei;
+	font-size: 200px;
+	text-align: center;
+	color: #800000;
+	text-shadow: -2px 3px 3px rgb(0,0,0,0.2), 4px 7px 10px rgb(0,0,0,0.19);
+}
+	
+.inputId{
+	width: 190px;
+	margin-top: 4px;
+	margin-bottom: 8px;
+}
+	
+.idSendButton{
+	font-family: Brush Script Std, Brush Script MT, Microsoft JhengHei, cursive;
+	position: absolute;
+	top: 0;
+	right: 20px;
+	float: right;
+	height: 120px;
+	border-top-width: 0;
+	border-left-width: 5px;
+	border-right-width: 5px;
+	border-bottom-width: 5px;
+	border-style: solid;
+	border-color: #FF69B4;
+	padding: 5px;
+	background: #FFE4E1;
+	cursor: pointer;
+}
+	
+.idSendButton:hover{
+	border-top-width: 0;
+	border-left-width: 5px;
+	border-right-width: 5px;
+	border-bottom-width: 5px;
+	border-style: solid;
+	border-color: #FF1493;
+}
+	
+.underline{
+	border-bottom-width: 2px;
+	border-top-width: 0;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-style: solid;
+	border-color: black;
+	height: 50px;
+}
+	
+.roomList{
+	padding-top: 70px;
+}
+
+.header{
+	width: 100%;
+	height: 50px;
+	background: #C71585;
+	-moz-box-shadow: 0 4px 8px 0 rgb(0,0,0,0.2), 0 6px 20px 0 rgb(0,0,0,0.19);
+	-webkit-box-shadow: 0 4px 8px 0 rgb(0,0,0,0.2), 0 6px 20px 0 rgb(0,0,0,0.19);
+	box-shadow: 0 4px 8px 0 rgb(0,0,0,0.2), 0 6px 20px 0 rgb(0,0,0,0.19);
+}
+
+.headerContent{
+	font-size: 25px;
+	font-family: Microsoft JhengHei;
+	font-weight: bold;
+	color: white;
+	margin-top: 5px;
+}
+
+.inputRoomNumber{
+	width: 100px;
+	margin-top: 3px;
+	font-size: 25px;
+	font-family: Microsoft JhengHei;
+	font-weight: bold;
+}
+
+.enterRoomButton{
+	border: #FFB6C1 5px solid;
+	cursor: pointer;
+	text-align: center;
+	font-size: 25px;
+	font-family: Microsoft JhengHei;
+	font-weight: bold;
+	color: white;
+	background: #FF1493;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.enterRoomButton:hover{
+	border: #FF7575 5px solid;
+}
+
+.roomListHeading{
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.roomListContent{
+	font-size: 20px;
+}
+
+.roomListEnterButton{
+	font-size: 20px;
+	border: #FF1493 2px solid;
+	cursor: pointer;
+	text-align: center;
+	background: #FFF0F5;
+}
+
+.roomListEnterButton:hover{
+	border: #C71585 2px solid;
+}
+
+.fullWidth{
+	width: 100%;
+}

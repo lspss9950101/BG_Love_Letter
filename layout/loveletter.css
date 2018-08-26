@@ -1,0 +1,109 @@
+.footer{
+	background: #D9006C;
+	-moz-box-shadow: 0 -4px 8px 0 rgb(0,0,0,0.2), 0 -6px 20px 0 rgb(0,0,0,0.19);
+	-webkit-box-shadow: 0 -4px 8px 0 rgb(0,0,0,0.2), 0 -6px 20px 0 rgb(0,0,0,0.19);
+	box-shadow: 0 -4px 8px 0 rgb(0,0,0,0.2), 0 -6px 20px 0 rgb(0,0,0,0.19);
+	height: 150px;
+}
+
+.chatBlockParent{
+	height: 100px;
+	padding: 5px;
+}
+
+.chatBlock{
+	background: #FFECEC;
+	position: relative;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 90px;
+	padding: 0;
+}
+
+.inputChat{
+	margin-top: 2px;
+	margin-bottom: 5px;
+	min-width: 100%;
+	background: #FFECEC;
+	font-size: 25px;
+}
+
+.sendButton{
+	border: #FFB6C1 5px solid;
+	cursor: pointer;
+	text-align: center;
+	font-size: 25px;
+	font-family: Microsoft JhengHei;
+	font-weight: bold;
+	color: white;
+	background: #FF1493;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	float: left;
+} 
+
+.sendButton:hover{
+	border: #FF7575 5px solid;
+}
+
+.gamePanel{
+	height: calc(90vh - 130px);
+}
+
+.gamePanelMargin{
+	margin:bottom: calc(10vh + 130px);
+	margin-top: 70px;
+}
+
+.gamePanelTitle{
+	font-weight: bold;
+	font-size: 25px;
+}
+
+.list{
+	font-size: 22px;
+	list-style-type: none;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding: 0;
+}
+
+.listHL{
+	font-weight: bold;
+}
+
+.consoleList li:nth-child(odd){
+	background: #EEEEEE;
+}
+
+.chatList li:nth-child(odd){
+	background: #FFB5B5;
+}
+
+.overflow{
+	overflow: auto;
+}
+
+.gameTable{
+	height: 600px;
+	width: 100%;
+	padding: 0;
+	text-align: center;
+}
+
+.card{
+	border: #FFF 5px solid;	
+	width: calc(50% - 10px);
+	cursor: pointer;
+	margin: 0;
+}
+
+.card:hover{
+	border: #F22 5px solid;	
+}
+
+.pointer{
+	cursor: pointer;
+}

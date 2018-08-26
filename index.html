@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <title>LoveLetter</title>
+        <!-- Bootstrap -->
+        <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js 讓 IE8 支援 HTML5 元素與媒體查詢 -->
+        <!-- 警告：Respond.js 無法在 file:// 協定下運作 -->
+        <!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="layout/hall.css"/>
+		<link rel="stylesheet" href="layout/loveletter.css"/>
+		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+			
+        </head>
+        <body style='font-family:Microsoft JhengHei;overflow:auto'>
+		
+			<div id="loginPage" class="container">
+				<div class="row">
+					<br><br><br><br>
+					<div class="col-xs-12 introFont">LoveLetter</div>
+					<br><br><br><br><br><br>
+					<div class="col-xs-6 col-xs-offset-3 introDiv">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-xs-12">
+									To: Princess
+								</div>
+							</div>
+							<div class="row underline"></div>
+							<div class="row underline"></div>
+							<div class="row underline"></div>
+							<div class="row underline"></div>
+							<div class="row underline"></div>
+							<div class="row">
+								<div class="col-xs-7 col-xs-offset-5">
+									From:
+									<input id="inputId" type="textarea" class="inputId">
+								</div>
+							</div>						
+						</div>
+						
+						<div id="sendButton" class="idSendButton"><br>Send</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="roomPage" class="container" style='width: 100%;'>
+				<nav class="navbar-default navbar-fixed-top" role="navigation">
+					<div class="container header"style='width: 100%;'>
+						<div class="row">
+							<div class="col-xs-2 headerContent" style='text-align: right;'>暱稱：</div>
+							<div id="userName" class="col-xs-1 headerContent">playername</div>
+							<div class="col-xs-2 headerContent" style='text-align: right;'>房號：</div>
+							<div class="col-xs-1"><input id="inputRoomNumber" type="textarea" class="inputRoomNumber"></div>
+							<div id="enterRoomBtn" class="col-xs-offset-1 col-xs-2 enterRoomButton">進入房間</div>
+							<div id="createRoomBtn" class="col-xs-2 col-xs-offset-1 enterRoomButton">創建房間</div>
+						</div>
+					</div>
+				</nav>
+				<div class="container roomList" style='width: 100%;'>
+					<div class="panel panel-default">
+						<div class="panel-heading roomListHeading">房間清單
+							<button id="roomListRefresh" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></button>
+						</div>
+						<ul id="roomList" class="list-group"></ul>
+					</div>
+				</div>
+			</div>
+		
+		
+			<div id="gamePage" class="container" style='width: 100%;'>
+				<nav class="navbar-default navbar-fixed-top" role="navigation">
+					<div class="container header">
+						<div class="row">
+							<div class="col-xs-2">
+								<button id="leaveRoomBtn" class="btn btn-default" style='margin-top: 5px;'>
+									<span class="glyphicon glyphicon-chevron-left"></span>
+								</button>
+							</div>
+							<div class="col-xs-2 headerContent" style='text-align: right;'>房號：</div>
+							<div id="roomNumber" class="col-xs-1 headerContent"></div>
+							<div class="col-xs-2 headerContent" style='text-align: right;'>房主：</div>
+							<div id="roomCreator" class="col-xs-2 headerContent"></div>
+							<div class="col-xs-3">
+								<div id="abortBtn" class="sendButton">終止遊戲</div>
+								<div id="startBtn" class="sendButton">開始遊戲</div>
+							</div>
+						</div>
+					</div>
+				</nav>
+				<div class="row">
+					<div class="col-xs-3">
+						<div class="panel panel-default gamePanel gamePanelMargin">
+							<div class="panel-heading gamePanelTitle">系統訊息</div>
+							<div id="consoleBlock" class="panel-body overflow" style='height: 90%;'>
+								<ul id="console" class="list consoleList"></ul>					
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="panel panel-default gamePanel gamePanelMargin">
+							<div class="panel-body container-fluid">
+
+								<div class="gameTable">
+									<img id="cardLeft" src='/assets/img/card_back.jpg' class="card">
+									<img id="cardRight" src='/assets/img/card_back.jpg' class="card">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="panel panel-default gamePanelMargin">
+							<div class="panel-heading gamePanelTitle">玩家列表</div>
+							<div id="playerListBlock" class="panel-body">
+								<ul id="playerList" class="list-group list"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<script src="js/Client.js"></script>
+		
+		
+        <!-- jQuery (Bootstrap 所有外掛均需要使用) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!-- 依需要參考已編譯外掛版本（如下），或各自獨立的外掛版本 -->
+        <script src="lib/js/bootstrap.min.js"></script>
+        </body>
+</html>
+    
