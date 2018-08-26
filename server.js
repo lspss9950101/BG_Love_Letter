@@ -316,8 +316,10 @@ function GameCore(num){
 				var temp = new Card(this.players[target].handcards[0]);
 				this.players[target].removeCard(0);
 				if(temp.number == 8)this.eliminate(target);
-				else sendMessage(this.roomNum, socketList[this.room.players[target]].name + "原本的牌是" + temp.getDisplayName(), false);
-				this.drawCard(target, false);
+				else{
+					sendMessage(this.roomNum, socketList[this.room.players[target]].name + "原本的牌是" + temp.getDisplayName(), false);
+					this.drawCard(target, false);
+				}
 				break;
 			case 6:
 				sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "和"
