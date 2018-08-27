@@ -125,7 +125,7 @@ function createRoom(num, id){
 
 function joinRoom(num, id){
 	if(roomList[num] != null && socketList[id] != null){
-		if(roomList[num].players.length >= 4){
+		if(roomList[num].players.length >= 4 || roomList[num].started){
 			io.to(id).emit('joinFailed',{});
 			return;
 		}
