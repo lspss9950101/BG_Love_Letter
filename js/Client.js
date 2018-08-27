@@ -129,7 +129,8 @@
 	});
 	
 	socket.on('toIntro',function(data){
-		show("loginPage");
+		el = document.getElementById("loginPage");
+		if(el)el.style.display = "block";
 		hide("roomPage");
 		hide("gamePage");
 	});
