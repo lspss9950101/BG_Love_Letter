@@ -145,14 +145,14 @@ function leaveRoom(id){
 			broadcastPlayerList(socketList[id].room);
 			socketList[id].leave(socketList[id].room);
 			if(roomList[socketList[id].room].creator == id)removeRoom(socketList[id].room);
-			io.to(id).emit('leaveRoom',{});
+			io.to(id).emit('leaveRoom',{false});
 			socketList[id].room = null;
 		}
 	}
 };
 
 function removeRoom(num){
-	io.in(num).emit('leaveRoom', {});
+	io.in(num).emit('leaveRoom', {true});
 	for(key in roomList[num].players){
 		socketList[roomList[num].players[key]].room = null;
 		socketList[roomList[num].players[key]].leave(num);

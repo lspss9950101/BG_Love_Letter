@@ -268,7 +268,7 @@
 	};
 	
 	socket.on('leaveRoom',function(data){
-		alert("房間已關閉!");
+		if(data)alert("房間已關閉!");
 		refreshRoomList();
 		hide("gamePage");
 		show("roomPage");
