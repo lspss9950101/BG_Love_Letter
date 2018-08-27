@@ -124,6 +124,10 @@ function createRoom(num, id){
 
 function joinRoom(num, id){
 	if(roomList[num] != null && socketList[id] != null){
+		if(roomList[num].players.length >= 4){
+			io.to(id).emit('joinFailed',{});
+			return;
+		}
 		roomList[num].players.push(id);
 		socketList[id].room = num;
 		socketList[id].join(num);
