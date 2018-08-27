@@ -85,6 +85,7 @@ io.on('connection',function(socket){
 	});
 	
 	socket.on('abortGame',function(data){
+		roomList[socket.room].started = false;
 		init_GamePage(socket.room);
 		roomList[socket.room].core = null;
 	});
