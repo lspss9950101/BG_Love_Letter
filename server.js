@@ -125,8 +125,12 @@ function createRoom(num, id){
 
 function joinRoom(num, id){
 	if(roomList[num] != null && socketList[id] != null){
-		if(roomList[num].players.length >= 4 || roomList[num].started){
-			io.to(id).emit('joinFailed',{});
+		if(roomList[num].players.length >= 4){
+			io.to(id).emit('joinFailed',"房間已滿");
+			return;
+		}
+		if(roomList[num].started){
+			io.to(id).emit('joinFailed',"遊戲已開始");
 			return;
 		}
 		roomList[num].players.push(id);
@@ -140,7 +144,7 @@ function joinRoom(num, id){
 		io.in(num).emit('joinRoom', temp);
 		temp = {roomNumber : num, creator : socketList[roomList[num].creator].name, players : playerNames, key : dataKey};
 		io.to(id).emit('joinRoom',temp);
-	}else io.to(id).emit('joinFailed',{});
+	}else io.to(id).emit('joinFailed',"房間不存在");
 };
 
 function leaveRoom(id){

@@ -223,7 +223,7 @@
 	});
 	
 	socket.on('joinFailed',function(data){
-		alert("房間不存在");
+		alert(data);
 		refreshRoomList();
 	});
 	
