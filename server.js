@@ -143,10 +143,10 @@ function leaveRoom(id){
 			var index = roomList[socketList[id].room].players.indexOf(id);
 			roomList[socketList[id].room].players.splice(index, 1);
 			broadcastPlayerList(socketList[id].room);
+			socketList[id].leave(socketList[id].room);
 			if(roomList[socketList[id].room].creator == id)removeRoom(socketList[id].room);
 			io.to(id).emit('leaveRoom',{});
 			socketList[id].room = null;
-			socketList[id].leave();
 		}
 	}
 };
@@ -155,7 +155,7 @@ function removeRoom(num){
 	io.in(num).emit('leaveRoom', {});
 	for(key in roomList[num].players){
 		socketList[roomList[num].players[key]].room = null;
-		socketList[roomList[num].players[key]].leave();
+		socketList[roomList[num].players[key]].leave(num);
 	}
 	roomList[num] = null;
 }
