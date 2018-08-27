@@ -128,6 +128,12 @@
 		if(e.keyCode === 13)document.getElementById("sendButton").click();
 	});
 	
+	socket.on('toIntro',function(data){
+		show("loginPage");
+		hide("roomPage");
+		hide("gamePage");
+	});
+	
 	socket.on('nameConfirmed', function(data){
 		if(data){
 			document.getElementById("userName").innerHTML = userName;

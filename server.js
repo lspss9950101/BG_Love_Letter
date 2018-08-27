@@ -21,6 +21,8 @@ var roomList = [];
 
 io.on('connection',function(socket){
 	
+	if(socketList[socket.id] == null)io.to(socket.id).emit('toIntro', {});
+	
 	socket.on('newUser',function(data){
 		for(var key in socketList)if(socketList[key] != null)if(socketList[key].name == data){
 			io.to(socket.id).emit('nameConfirmed', false);
