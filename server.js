@@ -74,6 +74,7 @@ io.on('connection',function(socket){
 			sendMessage(socket.room, "人數不足", false);
 			return;
 		}
+		roomList[socket.room].started = true;
 		sendMessage(socket.room, "----------", true);
 		sendMessage(socket.room, "GAME START", true);
 		roomList[socket.room].core = new GameCore(socket.room);
@@ -93,6 +94,7 @@ io.on('connection',function(socket){
 		if(roomList[socket.room].core.hasWinner()){
 			sendMessage(socket.room, "GAME OVER!", true);
 			roomList[socket.room].core.getWinner();
+			roomList[socket.room].started = false;
 			sendMessage(socket.room, "隱藏的底牌為 : " + roomList[socket.room].core.bottomCard.getDisplayName(),true);
 			init_GamePage(socket.room);
 			sendMessage(socket.room, "----------", true);
@@ -125,7 +127,6 @@ function joinRoom(num, id){
 		roomList[num].players.push(id);
 		socketList[id].room = num;
 		socketList[id].join(num);
-		
 		broadcastPlayerList(num);
 		var playerNames = [];
 		for(key in roomList[num].players)playerNames.push(socketList[roomList[num].players[key]].name);
@@ -134,7 +135,7 @@ function joinRoom(num, id){
 		io.in(num).emit('joinRoom', temp);
 		temp = {roomNumber : num, creator : socketList[roomList[num].creator].name, players : playerNames, key : dataKey};
 		io.to(id).emit('joinRoom',temp);
-	}
+	}else io.to(id).emit('joinFailed',{});
 };
 
 function leaveRoom(id){

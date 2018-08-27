@@ -222,6 +222,11 @@
 		refreshRoomList();
 	});
 	
+	socket.on('joinFailed',function(data){
+		alert("房間不存在");
+		refreshRoomList();
+	});
+	
 	///////////////////////////////////////////////////////////////////////////////
 	
 	socket.on('joinRoom', function(data){
