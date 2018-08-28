@@ -542,7 +542,7 @@
 			show("cardRight");
 		}
 		
-		if(data.card.indexOf(7) != -1 && data.card.length == 2)if(data.card[0] + data.card[1] >= 12)socket.emit('discardCard', {card : 7});
+		if(card7 == 2 && data.card.indexOf(7) != -1 && data.card.length == 2)if(data.card[0] + data.card[1] >= 12)socket.emit('discardCard', {card : 7});
 		if(data.card.indexOf(9) != -1)socket.emit('discardCard', {card : 9});
 	});
 	
