@@ -58,6 +58,10 @@ io.on('connection',function(socket){
 		}while(roomList[num] != null);
 		createRoom(num, socket.id);
 		joinRoom(num, socket.id);
+		var temp = [];
+		for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
+							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
+		io.emit('roomList', temp);
 	});
 	
 	socket.on('joinRoom',function(data){
@@ -121,10 +125,6 @@ function createRoom(num, id){
 	if(roomList[num] == null){
 		var room = new Room(id);
 		roomList[num] = room;
-		var temp = [];
-		for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
-							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
-		io.emit('roomList', temp);
 	}
 };
 
