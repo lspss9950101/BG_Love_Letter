@@ -169,7 +169,7 @@
 	document.getElementById("sendButton").addEventListener("click",function(){
 		if(document.getElementById("inputId").value === "")alert("請輸入暱稱!");
 		else if(checkChar(document.getElementById("inputId").value) === true)alert("請輸入合法字元!");
-		else if(document.getElementById("inputId").value.length > 12)alert("暱稱過長!");
+		else if(document.getElementById("inputId").value.length > 20)alert("暱稱過長!");
 		else{			
 			userName = document.getElementById("inputId").value;
 			socket.emit('newUser',userName);	
