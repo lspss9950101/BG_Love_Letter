@@ -277,14 +277,17 @@ function GameCore(num, card7, card8, cardX){
 				this.eliminate(key);
 			}
 			for(key in this.players){
-				if(winners[0] == null)winners.push(key);
+				if(this.players[key] == null);
+				else if(winners[0] == null)winners.push(key);
 				else if(this.players[winners[0]].handcards[0] == this.players[key].handcards[0])winners.push(key);
 				else if(this.players[winners[0]].handcards[0] < this.players[key].handcards[0]){
 					winners = [];
 					winners.push(key);
 				}
-				var temp = new Card(this.players[key].handcards[0], this.card7, this.card8);
-				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
+				if(this.players[key] != null){
+					var temp = new Card(this.players[key].handcards[0], this.card7, this.card8);
+					sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
+				}
 			}
 		}
 		if(winners.length == 1)sendMessage(this.roomNum, "贏家是" + socketList[this.room.players[winners[0]]].name, true);
@@ -352,12 +355,12 @@ function GameCore(num, card7, card8, cardX){
 				else sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "使" 
 										+ socketList[this.room.players[target]].name + "重抽一張牌 <--[5]", false);
 				var temp = new Card(this.players[target].handcards[0], this.card7, this.card8);
-				if(temp.number == 8 && (this.card7 == 1 || this.card7 == 3)){
+				if(temp.number == 8 && (this.card8 == 1 || this.card8 == 3)){
 					switch(this.card8){
 						case 1:
 							sendMessage(this.roomNum, socketList[this.room.players[target]].name + "拋棄了情書 <--[8]", false);
 							this.eliminate(target);
-							return;
+							break;
 						case 3:
 							sendMessage(this.roomNum, socketList[this.room.players[target]].name + "惹惱了檸檬公爵 <--[8]", false);
 							this.eliminate(target);
@@ -367,7 +370,7 @@ function GameCore(num, card7, card8, cardX){
 							sendMessage(this.roomNum, "隱藏的底牌為 : " + roomList[socket.room].core.bottomCard.getDisplayName(),true);
 							init_GamePage(this.roomNum);
 							sendMessage(this.roomNum, "----------", true);
-							return;
+							break;
 					}
 				}else{
 					this.players[target].removeCard(0);
