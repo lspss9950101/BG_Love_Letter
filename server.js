@@ -223,6 +223,7 @@ function GameCore(num, card7, card8, cardX){
 		var index = rndNum(0, this.cardPool.length - 1);
 		var card = this.cardPool[index];
 		this.cardPool.splice(index, 1);
+		if(this.cardPool.length <= 3)sendMessage(this.roomNum, "剩下" + this.cardPool.length + "張卡", true);
 		this.players[order].addCard(card);
 		var aliveList = [];
 		if(this.players[order].handcards.length == 2)for(key in this.players)if(this.players[key] != null)aliveList.push(socketList[this.room.players[key]].name);
@@ -262,6 +263,7 @@ function GameCore(num, card7, card8, cardX){
 			}
 			
 		}else{
+			sendMessage(this.roomNum, "牌庫空了!", true);
 			for(key in this.players)if(this.players[key] != null)if(this.players[key].handcards[0] == 8 && card8 == 2){
 				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "在結束時仍持有火焰公主 [8]", false);
 				this.eliminate(key);
