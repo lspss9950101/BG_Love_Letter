@@ -124,7 +124,7 @@ function createRoom(num, id){
 		var temp = [];
 		for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
 							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
-		io.broadcast.emit('roomList', temp);
+		io.emit('roomList', temp);
 	}
 };
 
@@ -178,7 +178,7 @@ function removeRoom(num){
 	var temp = [];
 	for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
 							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
-	io.broadcast.emit('roomList', temp);
+	io.emit('roomList', temp);
 }
 
 function broadcastPlayerList(num){
