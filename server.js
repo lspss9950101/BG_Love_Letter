@@ -121,6 +121,10 @@ function createRoom(num, id){
 	if(roomList[num] == null){
 		var room = new Room(id);
 		roomList[num] = room;
+		var temp = [];
+		for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
+							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
+		io.broadcast.emit('roomList', temp);
 	}
 };
 
@@ -171,6 +175,10 @@ function removeRoom(num){
 		socketList[roomList[num].players[key]].leave(num);
 	}
 	roomList[num] = null;
+	var temp = [];
+	for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
+							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
+	io.broadcast.emit('roomList', temp);
 }
 
 function broadcastPlayerList(num){
