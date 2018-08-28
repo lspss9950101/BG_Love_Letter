@@ -87,9 +87,14 @@
 							<div id="roomNumber" class="col-xs-1 headerContent"></div>
 							<div class="col-xs-2 headerContent" style='text-align: right;'>房主：</div>
 							<div id="roomCreator" class="col-xs-2 headerContent"></div>
-							<div class="col-xs-3">
+							<div class="col-xs-2">
 								<div id="abortBtn" class="sendButton">終止遊戲</div>
 								<div id="startBtn" class="sendButton">開始遊戲</div>
+							</div>
+							<div class="col-xs-1">
+								<button id="settingBtn" class="btn btn-default" style='margin-top: 5px;'>
+									<span class="glyphicon glyphicon-cog">
+								</button>
 							</div>
 						</div>
 					</div>
@@ -103,10 +108,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-6">
+					
+					<div id = "gameBoard"class="col-xs-6">
 						<div class="panel panel-default gamePanel gamePanelMargin">
 							<div class="panel-body container-fluid">
-
 								<div class="gameTable">
 									<img id="cardLeft" src='/assets/img/card_back.jpg' class="card">
 									<img id="cardRight" src='/assets/img/card_back.jpg' class="card">
@@ -114,6 +119,32 @@
 							</div>
 						</div>
 					</div>
+					
+					<div id = "ruleBoard"class = "col-xs-6">
+						<div class="panel panel-default gamePanelMargin">
+							<div class="panel-body">
+								<div class="container-fluid">
+									<div class="row">選擇[7] : </div>
+									<div class="row">
+										<img id="select7_1" src='/assets/img/card_7.jpg' class="col rule">
+										<img id="select7_2" src='/assets/img/card_7-2dis.jpg' class="col rule">
+									</div>
+									<div class="row">選擇[8] : </div>
+									<div class="row">
+										<img id="select8_1" src='/assets/img/card_8.jpg' class="col rule">
+										<img id="select8_2" src='/assets/img/card_8-2dis.jpg' class="col rule">
+										<img id="select8_3" src='/assets/img/card_8-3dis.jpg' class="col rule">
+										<img id="select8_4" src='/assets/img/card_8-4dis.jpg' class="col rule">
+									</div>
+									<div class="row">是否啟用[X] : </div>
+									<div class="row">
+										<img id="selectX" src='/assets/img/card_Xdis.jpg' class="col rule">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					<div class="col-xs-3">
 						<div class="panel panel-default gamePanelMargin">
 							<div class="panel-heading gamePanelTitle">玩家列表</div>

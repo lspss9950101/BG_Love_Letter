@@ -49,11 +49,11 @@
 }
 
 .gamePanel{
-	height: calc(90vh - 130px);
+	height: calc(90vh);
 }
 
 .gamePanelMargin{
-	margin:bottom: calc(10vh + 130px);
+	margin:bottom: calc(10vh);
 	margin-top: 70px;
 }
 
@@ -101,6 +101,17 @@
 }
 
 .card:hover{
+	border: #F22 5px solid;	
+}
+
+.rule{
+	border: #FFF 5px solid;	
+	width: calc(25% - 10px);
+	cursor: pointer;
+	margin: 0;
+}
+
+.rule:hover{
 	border: #F22 5px solid;	
 }
 

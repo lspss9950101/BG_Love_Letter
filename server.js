@@ -77,7 +77,8 @@ io.on('connection',function(socket){
 		roomList[socket.room].started = true;
 		sendMessage(socket.room, "----------", true);
 		sendMessage(socket.room, "GAME START", true);
-		roomList[socket.room].core = new GameCore(socket.room);
+		io.in(socket.room).emit('gameSetting', {card7 : data.card7, card8 : data.card8, cardX : data.cardX});
+		roomList[socket.room].core = new GameCore(socket.room, data.card7, data.card8, data.cardX);
 		roomList[socket.room].core.init();
 		roomList[socket.room].core.setCard(roomList[socket.room].players.length);
 		roomList[socket.room].core.dealCard();
@@ -154,6 +155,8 @@ function leaveRoom(id){
 			roomList[socketList[id].room].players.splice(index, 1);
 			broadcastPlayerList(socketList[id].room);
 			socketList[id].leave(socketList[id].room);
+			roomList[socketList[id].room].core = null;
+			roomList[socketList[id].room].started = false;
 			if(roomList[socketList[id].room].creator == id)removeRoom(socketList[id].room);
 			io.to(id).emit('leaveRoom',false);
 			socketList[id].room = null;
@@ -187,7 +190,7 @@ function sendMessage(num, msg, isHL){
 	io.in(num).emit('msg', data);
 }
 
-function GameCore(num){
+function GameCore(num, card7, card8, cardX){
 	this.room = roomList[num];
 	this.roomNum = num;
 	this.players = [];
@@ -195,7 +198,10 @@ function GameCore(num){
 	this.cardPool = [];
 	this.playerAlive = 0;
 	this.order = 0;
-	this.bottomCard = new Card(0);
+	this.card7 = card7;
+	this.card8 = card8;
+	this.cardX = cardX;
+	this.bottomCard = new Card(0, this.card7, this.card8);
 	
 	this.init = function(){
 		this.playerCount = this.room.players.length;
@@ -206,7 +212,8 @@ function GameCore(num){
 			var player = new Player();
 			this.players.push(player);
 		}
-		this.cardPool = [1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8];
+		if(this.cardX)this.cardPool = [1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8,9];
+		else this.cardPool = [1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8];
 	}
 	
 	this.init();
@@ -224,13 +231,13 @@ function GameCore(num){
 	
 	this.setCard = function(player){
 		var index = rndNum(0, this.cardPool.length - 1);
-		this.bottomCard = new Card(this.cardPool[index]);
+		this.bottomCard = new Card(this.cardPool[index], this.card7, this.card8);
 		this.cardPool.splice(index, 1);
 		if(player == 2){
 			for(var i = 0; i < 3; i++){
 				var ind = rndNum(0, this.cardPool.length - 1);
 				var cd = this.cardPool[ind];
-				var t = new Card(cd);
+				var t = new Card(cd, this.card7, this.card8);
 				this.cardPool.splice(ind, 1);
 				sendMessage(this.roomNum, "抽出底牌 : " + t.getDisplayName(),  true);
 			}
@@ -250,11 +257,15 @@ function GameCore(num){
 		if(this.playerAlive == 1){
 			for(key in this.players)if(this.players[key] != null){
 				winners.push(key);
-				var temp = new Card(this.players[key].handcards[0]);
+				var temp = new Card(this.players[key].handcards[0], this.card7, this.card8);
 				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
 			}
 			
 		}else{
+			for(key in this.players)if(this.players[key] != null)if(this.players[key].handcards[0] == 8 && card8 == 2){
+				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "在結束時仍持有火焰公主 [8]", false);
+				this.eliminate(key);
+			}
 			for(key in this.players){
 				if(winners[0] == null)winners.push(key);
 				else if(this.players[winners[0]].handcards[0] == this.players[key].handcards[0])winners.push(key);
@@ -262,7 +273,7 @@ function GameCore(num){
 					winners = [];
 					winners.push(key);
 				}
-				var temp = new Card(this.players[key].handcards[0]);
+				var temp = new Card(this.players[key].handcards[0], this.card7, this.card8);
 				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
 			}
 		}
@@ -283,7 +294,7 @@ function GameCore(num){
 	this.eliminate = function(order){
 		this.playerAlive--;
 		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "被淘汰了!", true);
-		var temp = new Card(this.players[order].handcards[0]);
+		var temp = new Card(this.players[order].handcards[0], this.card7, this.card8);
 		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "的底牌是" + temp.getDisplayName());
 		io.to(this.room.players[order]).emit('eliminated',{});
 		this.players[order] = null;
@@ -297,13 +308,13 @@ function GameCore(num){
 		}
 		if(target != null && this.players[target].isProtected){
 			sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "對" + socketList[this.room.players[target]].name
-							+ "使用了" + new Card(card).getDisplayName(), false);
+							+ "使用了" + new Card(card, this.card7, this.card8).getDisplayName(), false);
 			sendMessage(this.roomNum, "但是沒有效果", false);
 			return;
 		}
 		switch(card){
 			case 1:
-				var temp = new Card(extra);
+				var temp = new Card(extra, this.card7, this.card8);
 				sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "猜測"
 								+ socketList[this.room.players[target]].name + "的手牌是"
 								+ temp.getDisplayName() + " <--[1]", false);
@@ -330,10 +341,24 @@ function GameCore(num){
 				if(caster == target)sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "重抽了一張牌 <--[5]", false);
 				else sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "使" 
 										+ socketList[this.room.players[target]].name + "重抽一張牌 <--[5]", false);
-				var temp = new Card(this.players[target].handcards[0]);
-				if(temp.number == 8){
-					this.eliminate(target);
-					return;
+				var temp = new Card(this.players[target].handcards[0], this.card7, this.card8);
+				if(temp.number == 8 && (this.card7 == 1 || this.card7 == 3)){
+					switch(this.card8){
+						case 1:
+							sendMessage(this.roomNum, socketList[this.room.players[target]].name + "拋棄了情書 <--[8]", false);
+							this.eliminate(target);
+							return;
+						case 3:
+							sendMessage(this.roomNum, socketList[this.room.players[target]].name + "惹惱了檸檬公爵 <--[8]", false);
+							this.eliminate(target);
+							sendMessage(this.roomNum, "GAME OVER!", true);
+							this.getWinner();
+							roomList[this.roomNum].started = false;
+							sendMessage(this.roomNum, "隱藏的底牌為 : " + roomList[socket.room].core.bottomCard.getDisplayName(),true);
+							init_GamePage(this.roomNum);
+							sendMessage(this.roomNum, "----------", true);
+							return;
+					}
 				}else{
 					this.players[target].removeCard(0);
 					sendMessage(this.roomNum, socketList[this.room.players[target]].name + "原本的牌是" + temp.getDisplayName(), false);
@@ -350,11 +375,42 @@ function GameCore(num){
 				io.to(this.room.players[target]).emit('drawCard', {card : this.players[target].handcards, alives : null});
 				break;
 			case 7:
-				var temp = new Card(7);
-				sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "丟棄了艾薇爾  <--[7]", false);
+				switch(this.card7){
+					case 1:
+						sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "丟棄了艾薇爾  <--[7]", false);
+						break;
+					case 2:
+						if(this.players[caster].handcards[0] >= 5){
+							sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "的手牌總和大於12  <--[7]", false);
+							this.eliminate(caster);
+						}
+						else sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "丟棄了樹鼻妹  <--[7]", false);
+						break;
+				}
 				break;
 			case 8:
-				sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "拋棄了情書 <--[8]", false);
+				switch(this.card8){
+					case 1:
+						sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "拋棄了情書 <--[8]", false);
+						this.eliminate(caster);
+						break;
+					case 3:
+						sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "惹惱了檸檬公爵 <--[8]", false);
+						this.eliminate(caster);
+						sendMessage(this.roomNum, "GAME OVER!", true);
+						this.getWinner();
+						roomList[this.roomNum].started = false;
+						sendMessage(this.roomNum, "隱藏的底牌為 : " + roomList[this.roomNum].core.bottomCard.getDisplayName(),true);
+						init_GamePage(this.roomNum);
+						sendMessage(this.roomNum, "----------", true);
+						break;
+					case 4:
+						sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "丟棄了彩虹姐姐 <--[8]", false);
+						break;
+				}
+				break;
+			case 9:
+				sendMessage(this.roomNum, socketList[this.room.players[caster]].name + "被焚毀了 <--[X]", false);
 				this.eliminate(caster);
 				break;
 		}

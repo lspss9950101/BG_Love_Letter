@@ -1,7 +1,9 @@
 (function(){
 	
-	function Card(number){
+	function Card(number, card7, card8){
 		this.number = number;
+		this.card7 = card7;
+		this.card8 = card8;
 	
 		this.isEqual = function(operand){
 			if(operand.number = this.number)return true;
@@ -32,11 +34,34 @@
 					return "/assets/img/card_6.jpg";
 					break;
 				case 7:
-					return "/assets/img/card_7.jpg";
+					switch(card7){
+						case 1:
+							return "/assets/img/card_7.jpg";
+							break;
+						case 2:
+							return "/assets/img/card_7-2.jpg";
+							break;
+					}
 					break;
 				case 8:
-					return "/assets/img/card_8.jpg";
-					break;				
+					switch(card8){
+						case 1:
+							return "/assets/img/card_8.jpg";
+							break;
+						case 2:
+							return "/assets/img/card_8-2.jpg";
+							break;
+						case 3:
+							return "/assets/img/card_8-3.jpg";
+							break;
+						case 4:
+							return "/assets/img/card_8-4.jpg";
+							break;
+					}
+					break;
+				case 9:
+					return "/assets/img/card_X";
+					break;
 			}	
 		}
 	
@@ -61,11 +86,34 @@
 					return "冰霸王 [6]";
 					break;
 				case 7:
-					return "艾薇爾 [7]";
+					switch(card7){
+						case 1:
+							return "艾薇爾 [7]";
+							break;
+						case 2:
+							return "樹鼻妹 [7]";
+							break;
+					}
 					break;
 				case 8:
-					return "泡泡糖公主 [8]";
-					break;				
+					switch(card8){
+						case 1:
+							return "泡泡糖公主 [8]";
+							break;
+						case 2:
+							return "火焰公主 [8]";
+							break;
+						case 3:
+							return "檸檬公爵 [8]";
+							break;
+						case 4:
+							return "彩虹姐姐 [8]";
+							break;
+					}
+					break;
+				case 9:
+					return "陰魔王 [X]";
+					break;		
 			}
 		}
 	};
@@ -80,6 +128,9 @@
 	var choosedPlayer = null;
 	var PlayerKey = null;
 	var card = [];
+	var card7 = 1;
+	var card8 = 1;
+	var cardX = false;
 	var requireTarget = [1,2,3,5,6];
 	var targetNotSame = [1,2,3,6];
 	var validCard = [2,3,4,5,6,7,8];
@@ -99,6 +150,7 @@
 	
 	hide("roomPage");
 	hide("gamePage");
+	hide("ruleBoard");
 	
 	function clearNode(e){
 		var parentNode = document.getElementById(e);
@@ -190,6 +242,7 @@
 					socket.emit("joinRoom",parseInt(this.getAttribute("data-number")));
 					hide("startBtn");
 					hide("abortBtn");
+					hide("settingBtn");
 				};
 			}
 			
@@ -235,6 +288,7 @@
 		var roomCreatorDiv = document.getElementById("roomCreator");
 		roomCreatorDiv.innerHTML = data.creator;
 		if(document.getElementById("userName").innerHTML == roomCreatorDiv.innerHTML){
+			show("settingBtn");
 			show("startBtn");
 			hide("abortBtn");
 		}
@@ -299,11 +353,78 @@
 	
 	///////////////////////////////////////////////////////////////////////////////////
 	
+	document.getElementById("settingBtn").addEventListener("click",function(){
+		var e = document.getElementById("ruleBoard");
+		if(e.style.display == 'none'){
+			show("ruleBoard");
+			hide("gameBoard");
+		}else{
+			show("gameBoard");
+			hide("ruleBoard");
+		}
+	});
+	
+	document.getElementById("select7_1").addEventListener("click",function(){
+		card7 = 1;
+		document.getElementById("select7_1").src='/assets/img/card_7.jpg';
+		document.getElementById("select7_2").src='/assets/img/card_7-2dis.jpg';
+	});
+	
+	document.getElementById("select7_2").addEventListener("click",function(){
+		card7 = 2;
+		document.getElementById("select7_2").src='/assets/img/card_7-2.jpg';
+		document.getElementById("select7_1").src='/assets/img/card_7dis.jpg';
+	});
+	
+	document.getElementById("select8_1").addEventListener("click",function(){
+		card8 = 1;
+		document.getElementById("select8_1").src='/assets/img/card_8.jpg';
+		document.getElementById("select8_2").src='/assets/img/card_8-2dis.jpg';
+		document.getElementById("select8_3").src='/assets/img/card_8-3dis.jpg';
+		document.getElementById("select8_4").src='/assets/img/card_8-4dis.jpg';
+	});
+	
+	document.getElementById("select8_2").addEventListener("click",function(){
+		card8 = 2;
+		document.getElementById("select8_2").src='/assets/img/card_8-2.jpg';
+		document.getElementById("select8_1").src='/assets/img/card_8dis.jpg';
+		document.getElementById("select8_3").src='/assets/img/card_8-3dis.jpg';
+		document.getElementById("select8_4").src='/assets/img/card_8-4dis.jpg';
+	});
+	
+	document.getElementById("select8_3").addEventListener("click",function(){
+		card8 = 3;
+		document.getElementById("select8_3").src='/assets/img/card_8-3.jpg';
+		document.getElementById("select8_1").src='/assets/img/card_8dis.jpg';
+		document.getElementById("select8_2").src='/assets/img/card_8-2dis.jpg';
+		document.getElementById("select8_4").src='/assets/img/card_8-4dis.jpg';
+	});
+	
+	document.getElementById("select8_4").addEventListener("click",function(){
+		card8 = 4;
+		document.getElementById("select8_4").src='/assets/img/card_8-4.jpg';
+		document.getElementById("select8_1").src='/assets/img/card_8dis.jpg';
+		document.getElementById("select8_2").src='/assets/img/card_8-2dis.jpg';
+		document.getElementById("select8_3").src='/assets/img/card_8-3dis.jpg';
+	});
+	
+	document.getElementById("selectX").addEventListener("click",function(){
+		var e = document.getElementById("selectX");
+		cardX = !cardX;
+		if(cardX)e.src ='/assets/img/card_X.jpg';
+		else e.src ='/assets/img/card_Xdis.jpg';
+	});
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	
 	document.getElementById("startBtn").addEventListener("click",function(){
-		socket.emit('startGame',{});
+		socket.emit('startGame',{card7 : card7, card8 : card8, cardX : cardX});
 		if(document.getElementById("playerList").childNodes.length > 1){
 			show("abortBtn");
 			hide("startBtn");
+			hide("ruleBoard");
+			show("gameBoard");
+			hide("settingBtn");
 		}
 	});
 	
@@ -311,10 +432,17 @@
 		socket.emit('abortGame', {});
 		show("startBtn");
 		hide("abortBtn");
+		show("settingBtn");
 	});
 	
 	socket.on('init',function(data){
 		init_GamePage(data);
+	});
+	
+	socket.on('gameSetting',function(data){
+		card7 = data.card7;
+		card8 = data.card8;
+		cardX = data.cardX;
 	});
 	
 	function init_GamePage(isCreator){
@@ -326,6 +454,7 @@
 		if(isCreator){
 			show("startBtn");
 			hide("abortBtn");
+			show("settingBtn");
 		}
 	}
 	
@@ -338,6 +467,9 @@
 			return;
 		}else if((card[0] == 5 || card[0] == 6) && card[1] == 7){
 			alert("請優先選擇艾薇爾[7]");
+			return;
+		}else if(card8 == 2 && card[0] == 8){
+			alert("不可直接丟棄火焰公主[8]");
 			return;
 		}else{
 			var guessedCard;
@@ -366,6 +498,9 @@
 		}else if((card[1] == 5 || card[1] == 6) && card[0] == 7){
 			alert("請優先選擇艾薇爾[7]");
 			return;
+		}else if(card8 == 2 && card[1] == 8){
+			alert("不可直接丟棄火焰公主[8]");
+			return;
 		}else{
 			var guessedCard = null;
 			if(card[1] == 1){
@@ -385,16 +520,16 @@
 	
 	socket.on('drawCard',function(data){
 		if(data.card.length == 1){
-			var cardt = new Card(data.card[0]);
+			var cardt = new Card(data.card[0], card7, card8);
 			document.getElementById("cardLeft").src = cardt.getPic();
 			document.getElementById("cardLeft").removeEventListener("click",clickLeft);
 			document.getElementById("cardRight").removeEventListener("click",clickRight);
 			show("cardLeft");
 			hide("cardRight");
 		}else{
-			var cardt = new Card(data.card[0]);
+			var cardt = new Card(data.card[0], card7, card8);
 			document.getElementById("cardLeft").src = cardt.getPic();
-			cardt = new Card(data.card[1]);
+			cardt = new Card(data.card[1], card7, card8);
 			document.getElementById("cardRight").src = cardt.getPic();
 			
 			card = data.card;
@@ -406,10 +541,13 @@
 			show("cardLeft");
 			show("cardRight");
 		}
+		
+		if(data.card.indexOf(7) != -1 && data.card.length == 2)if(data.card[0] + data.card[1] >= 12)socket.emit('discardCard', {card : 7});
+		if(data.card.indexOf(9) != -1)socket.emit('discardCard', {card : 9});
 	});
 	
 	socket.on('peek',function(data){
-		var cardt = new Card(data.card);
+		var cardt = new Card(data.card, card7, card8);
 		alert(data.target + "有一張" + cardt.getDisplayName());
 	});
 	
