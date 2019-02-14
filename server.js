@@ -31,12 +31,12 @@ io.on('connection',function(socket){
 		socket.name = data;
 		io.to(socket.id).emit('nameConfirmed', true);
 		socketList[socket.id] = socket;
-		console.log("> Broadcast <   %s logged in.", data);
+		console.log("<Lobby>\t%s logged in.", data);
 	});
 	
 	socket.on('disconnect',function(data){
 		if(socketList[socket.id] != null){
-			console.log("> Broadcast <   %s logged out.", socketList[socket.id].name);
+			console.log("<Lobby>\t%s logged out.", socketList[socket.id].name);
 			leaveRoom(socket.id);
 		}
 		socketList[socket.id] = null;
@@ -62,15 +62,18 @@ io.on('connection',function(socket){
 		for(var key in roomList)if(roomList[key] != null)temp.push({roomNumber : key, player : roomList[key].players.length,
 							creator : socketList[roomList[key].creator].name, started : roomList[key].started});
 		io.emit('roomList', temp);
+		console.log("<Room>\tRoom %d created.", num);
 	});
 	
 	socket.on('joinRoom',function(data){
 		if(roomList[data] == null)createRoom(data, socket.id);
 		joinRoom(data, socket.id);
+		console.log("<Room>\t%s joined Room %d.", socket.name, data);
 	});
 	
 	socket.on('leaveRoom',function(data){
 		leaveRoom(socket.id);
+		console.log("<Room>\t%s left Room.", socket.name);
 	});
 	
 	socket.on('startGame',function(data){
@@ -81,6 +84,7 @@ io.on('connection',function(socket){
 		roomList[socket.room].started = true;
 		sendMessage(socket.room, "----------", true);
 		sendMessage(socket.room, "GAME START", true);
+		console.log("<Game>\tRoom %d started game.", socket.room);
 		io.in(socket.room).emit('gameSetting', {card7 : data.card7, card8 : data.card8, cardX : data.cardX});
 		roomList[socket.room].core = new GameCore(socket.room, data.card7, data.card8, data.cardX);
 		roomList[socket.room].core.init();
@@ -90,12 +94,14 @@ io.on('connection',function(socket){
 	});
 	
 	socket.on('abortGame',function(data){
+		console.log("<Game>\tRoom %d aborted game.", socket.room);
 		roomList[socket.room].started = false;
 		init_GamePage(socket.room);
 		roomList[socket.room].core = null;
 	});
 	
 	socket.on('discardCard',function(data){
+		console.log("<Game>\t<%d>\t%s discarded %d.", socket.room, socket.name, data.card);
 		roomList[socket.room].core.discardCard(roomList[socket.room].core.order, data.card, data.target, data.extra);
 		if(roomList[socket.room].core.hasWinner()){
 			sendMessage(socket.room, "GAME OVER!", true);
@@ -231,6 +237,7 @@ function GameCore(num, card7, card8, cardX){
 		var index = rndNum(0, this.cardPool.length - 1);
 		var card = this.cardPool[index];
 		this.cardPool.splice(index, 1);
+		console.log("<Game>\t<%d>\t%s drew %d.", this.roomNum, socketList[roomList[this.roomNum].players[order]].name, card);
 		if(this.cardPool.length <= 3)sendMessage(this.roomNum, "剩下" + this.cardPool.length + "張卡", true);
 		this.players[order].addCard(card);
 		var aliveList = [];
@@ -308,7 +315,7 @@ function GameCore(num, card7, card8, cardX){
 		this.playerAlive--;
 		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "被淘汰了!", true);
 		var temp = new Card(this.players[order].handcards[0], this.card7, this.card8);
-		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "的底牌是" + temp.getDisplayName());
+		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "的底牌是" + temp.getDisplayName(), false);
 		io.to(this.room.players[order]).emit('eliminated',{});
 		this.players[order] = null;
 	}
