@@ -391,6 +391,7 @@ function GameCore(num, card7, card8, cardX){
 				}else{
 					this.players[target].removeCard(0);
 					sendMessage(this.roomNum, socketList[this.room.players[target]].name + "原本的牌是" + temp.getDisplayName(), false);
+					usedCard(this.roomNum, temp.number);
 					this.drawCard(target, false);
 				}
 				break;
