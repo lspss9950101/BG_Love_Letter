@@ -204,6 +204,10 @@ function sendMessage(num, msg, isHL){
 	io.in(num).emit('msg', data);
 }
 
+function usedCard(num, card){
+	io.in(num).emit('usedCard', {card : card});
+}
+
 function GameCore(num, card7, card8, cardX){
 	this.room = roomList[num];
 	this.roomNum = num;
@@ -256,6 +260,7 @@ function GameCore(num, card7, card8, cardX){
 				var t = new Card(cd, this.card7, this.card8);
 				this.cardPool.splice(ind, 1);
 				sendMessage(this.roomNum, "抽出底牌 : " + t.getDisplayName(),  true);
+				usedCard(this.roomNum, cd);
 			}
 		}
 	}
@@ -275,6 +280,7 @@ function GameCore(num, card7, card8, cardX){
 				winners.push(key);
 				var temp = new Card(this.players[key].handcards[0], this.card7, this.card8);
 				sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
+				usedCard(this.roomNum, temp.number);
 			}
 			
 		}else{
@@ -294,6 +300,7 @@ function GameCore(num, card7, card8, cardX){
 				if(this.players[key] != null){
 					var temp = new Card(this.players[key].handcards[0], this.card7, this.card8);
 					sendMessage(this.roomNum, socketList[this.room.players[key]].name + "的底牌是" + temp.getDisplayName(), false);
+					usedCard(this.roomNum, temp.number);
 				}
 			}
 		}
@@ -316,12 +323,14 @@ function GameCore(num, card7, card8, cardX){
 		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "被淘汰了!", true);
 		var temp = new Card(this.players[order].handcards[0], this.card7, this.card8);
 		sendMessage(this.roomNum, socketList[this.room.players[order]].name + "的底牌是" + temp.getDisplayName(), false);
+		usedCard(this.roomNum, temp.number);
 		io.to(this.room.players[order]).emit('eliminated',{});
 		this.players[order] = null;
 	}
 	
 	this.discardCard = function(caster, card, target, extra){
 		this.players[caster].isProtected = false;
+		usedCard(this.roomNum, card);
 		for(key in this.players[caster].handcards)if(this.players[caster].handcards[key] == card){
 			this.players[caster].handcards.splice(key, 1);
 			break;
