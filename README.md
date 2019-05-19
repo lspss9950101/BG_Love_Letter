@@ -1,6 +1,6 @@
 # Introduction #
 ## Overview ##
-This is an online multiplayer web game based on the borad game - love letter. The number of players is 2~4. The server will automatically conduct the following action, dealing cards, casting card effects, determining the end of a game. The rule is same as the origin one with some optional extension. This program is currently running on Heroku, <a href="https://tragic-dilemma-loveletter.herokuapp.com/">.
+This is an online multiplayer web game based on the borad game - love letter. The number of players is 2~4. The server will automatically conduct the following action, dealing cards, casting card effects, determining the end of a game. The rule is same as the origin one with some optional extension. This program is currently running on <a href="https://tragic-dilemma-loveletter.herokuapp.com/">Heroku</a>.
 ## Implementation ##
 This is a little practice of Javascript, CSS and HTML. This project contains a server and an interative webpage. The server was built using Node.js with express and websocket modules. The game page is written in a html file, which consist of three main div, intro, hall, and game div with the visiability controlled by Javascript. The client communicates with the server by websocket.
 # API #
